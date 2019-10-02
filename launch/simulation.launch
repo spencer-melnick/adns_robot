@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="gazebo_ros" type="gazebo" name="gazebo" />
+</launch>

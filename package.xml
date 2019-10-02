@@ -53,6 +53,9 @@
   <exec_depend>image_proc</exec_depend>
   <exec_depend>libuvc_camera</exec_depend>
   <exec_depend>aruco_detect</exec_depend>
+  <exec_depend>gazebo_ros_pkgs</exec_depend>
+  <exec_depend>diff_drive_controller</exec_depend>
+
 
 
   <!-- The export tag contains other, unspecified, tags -->
