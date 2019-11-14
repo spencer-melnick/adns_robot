@@ -1,0 +1,209 @@
+<robot name="adns_robot">
+    <material name="grey">
+        <color rgba="0.8 0.8 0.8 1" />
+    </material>
+
+    <link name="base_link">
+        <collision>
+            <geometry>
+                <box size="0.3556 0.2794 0.0508" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <geometry>
+                <box size="0.3556 0.2794 0.0508" />
+            </geometry>
+            <material name="grey" />
+        </visual>
+
+        <inertial>
+            <mass value="1" />
+            <inertia
+                ixx="1.0" ixy="0.0" ixz="0.0"
+                iyy="1.0" iyz="0.0"
+                izz="1.0" />
+        </inertial>
+    </link>
+
+    <link name="container">
+        <collision>
+            <geometry>
+                <box size="0.4572 0.381 0.2667" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <geometry>
+                <box size="0.4572 0.381 0.2667" />
+            </geometry>
+            <material name="grey" />
+        </visual>
+
+        <inertial>
+            <mass value="1" />
+            <inertia
+                ixx="1.0" ixy="0.0" ixz="0.0"
+                iyy="1.0" iyz="0.0"
+                izz="1.0" />
+        </inertial>
+    </link>
+
+    <link name="f_l_wheel">
+        <collision>
+            <origin xyz="0 0 0" rpy="1.5708 0 0" />
+            <geometry>
+                <cylinder length="0.0508" radius="0.0762" />
+            </geometry>
+        </collision>
+
+        <visual>                        
+            <origin xyz="0 0 0" rpy="1.5708 0 0" />
+            <geometry>
+                <cylinder length="0.0508" radius="0.0762" />
+            </geometry>
+            <material name="grey" />
+        </visual>
+
+        <inertial>
+            <mass value="1" />
+            <inertia
+                ixx="1.0" ixy="0.0" ixz="0.0"
+                iyy="1.0" iyz="0.0"
+                izz="1.0" />
+        </inertial>
+    </link>
+
+    <link name="f_r_wheel">
+        <collision>
+            <origin xyz="0 0 0" rpy="-1.5708 0 0" />
+            <geometry>
+                <cylinder length="0.0508" radius="0.0762" />
+            </geometry>
+        </collision>
+
+        <visual>                        
+            <origin xyz="0 0 0" rpy="1.5708 0 0" />
+            <geometry>
+                <cylinder length="0.0508" radius="0.0762" />
+            </geometry>
+            <material name="grey" />
+        </visual>
+
+        <inertial>
+            <mass value="1" />
+            <inertia
+                ixx="1.0" ixy="0.0" ixz="0.0"
+                iyy="1.0" iyz="0.0"
+                izz="1.0" />
+        </inertial>
+    </link>
+
+    <link name="b_l_wheel">
+        <collision>
+            <origin xyz="0 0 0" rpy="1.5708 0 0" />
+            <geometry>
+                <cylinder length="0.0508" radius="0.0762" />
+            </geometry>
+        </collision>
+
+        <visual>                        
+            <origin xyz="0 0 0" rpy="1.5708 0 0" />
+            <geometry>
+                <cylinder length="0.0508" radius="0.0762" />
+            </geometry>
+            <material name="grey" />
+        </visual>
+
+        <inertial>
+            <mass value="1" />
+            <inertia
+                ixx="1.0" ixy="0.0" ixz="0.0"
+                iyy="1.0" iyz="0.0"
+                izz="1.0" />
+        </inertial>
+    </link>
+
+    <link name="b_r_wheel">
+        <collision>
+            <origin xyz="0 0 0" rpy="-1.5708 0 0" />
+            <geometry>
+                <cylinder length="0.0508" radius="0.0762" />
+            </geometry>
+        </collision>
+
+        <visual>                        
+            <origin xyz="0 0 0" rpy="-1.5708 0 0" />
+            <geometry>
+                <cylinder length="0.0508" radius="0.0762" />
+            </geometry>
+            <material name="grey" />
+        </visual>
+
+        <inertial>
+            <mass value="1" />
+            <inertia
+                ixx="1.0" ixy="0.0" ixz="0.0"
+                iyy="1.0" iyz="0.0"
+                izz="1.0" />
+        </inertial>
+    </link>
+
+    <link name="tilt_bracket">
+    </link>
+
+    <link name="camera">
+    </link>
+
+    <joint name="standoffs" type="fixed">
+        <parent link="base_link" />
+        <child link="container" />
+        <axis xyz="0 1 0" />
+        <origin xyz="0 0 0.26035" />
+    </joint>
+
+    <joint name="f_l_joint" type="continuous">
+        <parent link="base_link" />
+        <child link="f_l_wheel" />
+        <axis xyz="0 1 0" />
+        <origin xyz="0.127 0.1651 0" />
+    </joint>
+
+    <joint name="f_r_joint" type="continuous">
+        <parent link="base_link" />
+        <child link="f_r_wheel" />
+        <axis xyz="0 1 0" />
+        <origin xyz="0.127 -0.1651 0" />
+    </joint>
+
+    <joint name="b_l_joint" type="continuous">
+        <parent link="base_link" />
+        <child link="b_l_wheel" />
+        <axis xyz="0 1 0" />
+        <origin xyz="-0.127 0.1651 0" />
+    </joint>
+
+    <joint name="b_r_joint" type="continuous">
+        <parent link="base_link" />
+        <child link="b_r_wheel" />
+        <axis xyz="0 1 0" />
+        <origin xyz="-0.127 -0.1651 0" />
+    </joint>
+
+    <joint name="pan_servo_joint" type="revolute">
+        <parent link="container" />
+        <child link="tilt_bracket" />
+        <axis xyz="0 0 1" />
+        <origin xyz="0 0 0.1397" />
+        <limit lower="-1.28" upper="1.28" effort="0" velocity="0" />
+    </joint>
+
+    <joint name="tilt_servo_joint" type="revolute">
+        <parent link="tilt_bracket" />
+        <child link="camera" />
+        <axis xyz="0 1 0" />
+        <origin xyz="0 0 0.02" />
+        <limit lower="-2.56" upper="0" effort="0" velocity="0" />
+    </joint>
+
+</robot>
