@@ -24,6 +24,9 @@ namespace gazebo
             }
         }
 
+        AssignDriveJoints(_parent, _sdf, "left_drive_joint", left_drive_joints_);
+        AssignDriveJoints(_parent, _sdf, "right_drive_joint", right_drive_joints_);
+
         std::string robot_namespace = _sdf->GetElement("namespace")->GetValue()->GetAsString();
         node_.reset(new ros::NodeHandle(robot_namespace + "/differential_controller"));
         ROS_INFO_NAMED("differential_controller", "Spawned differential_controller node in namespace %s", robot_namespace.c_str());
@@ -44,8 +47,15 @@ namespace gazebo
 
     void DifferentialControllerPlugin::OnVelocityMessage(const adns_robot_core::differential_velocityConstPtr& message)
     {
-        // do something!
-        ROS_INFO_STREAM_NAMED("differential_controller", "Velocity updated");
+        for (auto& joint: left_drive_joints_)
+        {
+            joint->SetParam("vel", 0, message->left_velocity);
+        }
+
+        for (auto& joint: right_drive_joints_)
+        {
+            joint->SetParam("vel", 0, message->right_velocity);
+        }
     }
 
     void DifferentialControllerPlugin::QueueThread()
@@ -56,5 +66,26 @@ namespace gazebo
         {
             callback_queue_.callAvailable(ros::WallDuration(DifferentialControllerPlugin::TIMEOUT));
         }
+    }
+
+    void DifferentialControllerPlugin::AssignDriveJoints(physics::ModelPtr model, sdf::ElementPtr sdf, std::string tag_name, std::vector<physics::JointPtr>& array)
+    {
+        sdf::ElementPtr drive_joint_element = sdf->GetElement(tag_name);
+        physics::JointPtr drive_joint;
+
+        while (drive_joint_element)
+        {
+            drive_joint = model->GetJoint(drive_joint_element->GetValue()->GetAsString());
+
+            if (drive_joint)
+            {
+                drive_joint->SetParam("fmax", 0, 100.0);
+                array.push_back(drive_joint);
+            }
+
+            drive_joint_element = drive_joint_element->GetNextElement(tag_name);
+        }
+
+        ROS_INFO_NAMED("differential_controller", "%d joints assigned to %s", static_cast<int>(array.size()), tag_name.c_str());
     }
 }

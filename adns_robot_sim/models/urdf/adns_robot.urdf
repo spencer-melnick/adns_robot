@@ -3,6 +3,10 @@
         <plugin name="differential_controller" filename="libadns_robot_sim_differential_controller.so">
             <namespace>/adns_robot</namespace>
             <topic>/adns_robot/drive_velocity</topic>
+            <left_drive_joint>f_l_joint</left_drive_joint>
+            <left_drive_joint>b_l_joint</left_drive_joint>
+            <right_drive_joint>f_r_joint</right_drive_joint>
+            <right_drive_joint>b_r_joint</right_drive_joint>
         </plugin>
     </gazebo>
 
@@ -25,7 +29,7 @@
         </visual>
 
         <inertial>
-            <mass value="1" />
+            <mass value="20" />
             <inertia
                 ixx="1.0" ixy="0.0" ixz="0.0"
                 iyy="1.0" iyz="0.0"

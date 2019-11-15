@@ -2,6 +2,8 @@
 #include <ros/callback_queue.h>
 
 #include <gazebo/gazebo.hh>
+#include <gazebo/physics/Joint.hh>
+#include <gazebo/physics/Model.hh>
 
 #include <thread>
 #include <vector>
@@ -18,6 +20,7 @@ namespace gazebo
         protected:
             void OnVelocityMessage(const adns_robot_core::differential_velocityConstPtr& message);
             void QueueThread();
+            void AssignDriveJoints(physics::ModelPtr model, sdf::ElementPtr sdf, std::string tag_name, std::vector<physics::JointPtr>& array);
 
             const double TIMEOUT = 0.01;
             const std::vector<std::string> REQUIRED_TAGS = {"namespace", "topic"};
@@ -27,5 +30,8 @@ namespace gazebo
             ros::Subscriber subscriber_;
             ros::CallbackQueue callback_queue_;
             std::thread queue_thread_;
+
+            std::vector<physics::JointPtr> left_drive_joints_;
+            std::vector<physics::JointPtr> right_drive_joints_;
     };
 }
