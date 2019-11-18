@@ -1,0 +1,7 @@
+<launch>
+    <param name="adns_robot/wheel_base" type="double" value="0.3048" />
+    <param name="adns_robot/wheel_radius" type="double" value="0.076" />
+
+    <node pkg="adns_robot_core" type="differential_drive" name="differential_drive" ns="adns_robot" />
+    <!-- <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_keyboard" ns="adns_robot" /> -->
+</launch>

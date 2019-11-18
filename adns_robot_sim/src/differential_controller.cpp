@@ -42,6 +42,38 @@ namespace gazebo
         subscriber_ = node_->subscribe(subscribe_options);
         ROS_INFO_NAMED("differential_controller", "Subscribed to control velocity topic %s", differential_velocity_topic.c_str());
 
+
+        double max_force = DifferentialControllerPlugin::MAX_FORCE_DEFAULT;
+
+        if (_sdf->HasElement("max_force"))
+        {
+            std::string max_force_string = _sdf->GetElement("max_force")->GetValue()->GetAsString();
+            
+            try
+            {
+                max_force = std::stod(max_force_string);
+            }
+            catch (std::invalid_argument& e)
+            {
+                ROS_WARN_NAMED("differential_controller", "max_force element contained in robot description, but value is not a double");
+            }
+        }
+        else
+        {
+            ROS_WARN_NAMED("differential_controller", "No max_force element found in robot description - using default value of %f", max_force);
+        }
+
+        for (auto& joint : left_drive_joints_)
+        {
+            joint->SetParam("fmax", 0, max_force);
+        }
+
+        for (auto& joint : right_drive_joints_)
+        {
+            joint->SetParam("fmax", 0, max_force);
+        }
+
+        ROS_INFO_NAMED("differential_controller", "Spinning differential controller plugin");
         queue_thread_ = std::thread(std::bind(&DifferentialControllerPlugin::QueueThread, this));
     }
 

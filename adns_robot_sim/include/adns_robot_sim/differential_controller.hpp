@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ros/ros.h>
 #include <ros/callback_queue.h>
 
@@ -23,6 +25,7 @@ namespace gazebo
             void AssignDriveJoints(physics::ModelPtr model, sdf::ElementPtr sdf, std::string tag_name, std::vector<physics::JointPtr>& array);
 
             const double TIMEOUT = 0.01;
+            const double MAX_FORCE_DEFAULT = 1.0;
             const std::vector<std::string> REQUIRED_TAGS = {"namespace", "topic"};
 
         private:

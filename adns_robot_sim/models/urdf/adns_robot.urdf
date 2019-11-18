@@ -7,6 +7,7 @@
             <left_drive_joint>b_l_joint</left_drive_joint>
             <right_drive_joint>f_r_joint</right_drive_joint>
             <right_drive_joint>b_r_joint</right_drive_joint>
+            <max_force>10.0</max_force>
         </plugin>
     </gazebo>
 
@@ -29,7 +30,7 @@
         </visual>
 
         <inertial>
-            <mass value="20" />
+            <mass value="10" />
             <inertia
                 ixx="1.0" ixy="0.0" ixz="0.0"
                 iyy="1.0" iyz="0.0"
@@ -52,7 +53,7 @@
         </visual>
 
         <inertial>
-            <mass value="1" />
+            <mass value="30" />
             <inertia
                 ixx="1.0" ixy="0.0" ixz="0.0"
                 iyy="1.0" iyz="0.0"
@@ -77,7 +78,7 @@
         </visual>
 
         <inertial>
-            <mass value="1" />
+            <mass value="0.5" />
             <inertia
                 ixx="1.0" ixy="0.0" ixz="0.0"
                 iyy="1.0" iyz="0.0"
@@ -102,7 +103,7 @@
         </visual>
 
         <inertial>
-            <mass value="1" />
+            <mass value="0.5" />
             <inertia
                 ixx="1.0" ixy="0.0" ixz="0.0"
                 iyy="1.0" iyz="0.0"
@@ -127,7 +128,7 @@
         </visual>
 
         <inertial>
-            <mass value="1" />
+            <mass value="0.5" />
             <inertia
                 ixx="1.0" ixy="0.0" ixz="0.0"
                 iyy="1.0" iyz="0.0"
@@ -152,7 +153,7 @@
         </visual>
 
         <inertial>
-            <mass value="1" />
+            <mass value="0.5" />
             <inertia
                 ixx="1.0" ixy="0.0" ixz="0.0"
                 iyy="1.0" iyz="0.0"

@@ -6,6 +6,8 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
     std_msgs
     message_generation
+    geometry_msgs
+    roscpp
 )
 
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -21,17 +23,17 @@ generate_messages(
 )
 
 catkin_package(
-    CATKIN_DEPENDS message_runtime std_msgs
+    CATKIN_DEPENDS message_runtime std_msgs geometry_msgs roscpp
 )
 
 include_directories(
     ${catkin_INCLUDE_DIRS}
 )
 
-# add_executable(${PROJECT_NAME}_node src/adns_robot_core_node.cpp)
-# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_executable(${PROJECT_NAME}_differential_drive src/differential_drive.cpp)
+set_target_properties(${PROJECT_NAME}_differential_drive PROPERTIES OUTPUT_NAME differential_drive PREFIX "")
+add_dependencies(${PROJECT_NAME}_differential_drive ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(${PROJECT_NAME}_differential_drive
+  ${catkin_LIBRARIES}
+)

@@ -11,4 +11,6 @@
     </node>
 
     <node pkg="gazebo_ros" type="spawn_model" name="gazebo_spawn_robot" args="-file $(arg urdf_path) -urdf -x 0 -y 0 -z 1 -model adns_robot" />
+
+    <include file="$(find adns_robot_core)/launch/base.launch" />
 </launch>
