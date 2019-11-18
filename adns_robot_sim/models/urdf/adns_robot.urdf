@@ -11,6 +11,53 @@
         </plugin>
     </gazebo>
 
+    <gazebo reference="camera_link">
+        <sensor type="depth" name="main_camera">
+            <update_rate>60</update_rate>
+            <camera>
+                <horizontal_fov>1.2043</horizontal_fov>
+                <image>
+                    <width>640</width>
+                    <height>480</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.05</near>
+                    <far>5</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.007</stddev>
+                </noise>
+            </camera>
+            <plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
+                <baseline>0.2</baseline>
+                <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate>
+                <cameraName>/adns_robot/camera</cameraName>
+                <imageTopicName>color/image_raw</imageTopicName>
+                <cameraInfoTopicName>color/camera_info</cameraInfoTopicName>
+                <depthImageTopicName>depth/image_raw</depthImageTopicName>
+                <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
+                <pointCloudTopicName>depth/points</pointCloudTopicName>
+                <frameName>camera_link</frameName>
+                <pointCloudCutoff>0.2</pointCloudCutoff>
+                <pointCloudCutoffMax>1.5</pointCloudCutoffMax>
+                <distortionK1>0</distortionK1>
+                <distortionK2>0</distortionK2>
+                <distortionK3>0</distortionK3>
+                <distortionT1>0</distortionT1>
+                <distortionT2>0</distortionT2>
+                <CxPrime>0</CxPrime>
+                <Cx>0</Cx>
+                <Cy>0</Cy>
+                <focalLength>0</focalLength>
+                <hackBaseline>0</hackBaseline>
+            </plugin>
+        </sensor>
+    </gazebo>
+
     <material name="grey">
         <color rgba="0.8 0.8 0.8 1" />
     </material>
@@ -162,9 +209,49 @@
     </link>
 
     <link name="tilt_bracket">
+        <collision>
+            <geometry>
+                <box size="0.03 0.03 0.03" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <geometry>
+                <box size="0.03 0.03 0.03" />
+            </geometry>
+            <material name="grey" />
+        </visual>
+
+        <inertial>
+            <mass value="0.5" />
+            <inertia
+                ixx="1.0" ixy="0.0" ixz="0.0"
+                iyy="1.0" iyz="0.0"
+                izz="1.0" />
+        </inertial>
     </link>
 
-    <link name="camera">
+    <link name="camera_link">
+        <collision>
+            <geometry>
+                <box size="0.012 0.139 0.026" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <geometry>
+                <box size="0.012 0.139 0.026" />
+            </geometry>
+            <material name="grey" />
+        </visual>
+
+        <inertial>
+            <mass value="0.5" />
+            <inertia
+                ixx="1.0" ixy="0.0" ixz="0.0"
+                iyy="1.0" iyz="0.0"
+                izz="1.0" />
+        </inertial>
     </link>
 
     <joint name="standoffs" type="fixed">
@@ -202,19 +289,19 @@
         <origin xyz="-0.127 -0.1651 0" />
     </joint>
 
-    <joint name="pan_servo_joint" type="revolute">
+    <joint name="pan_servo_joint" type="fixed">
         <parent link="container" />
         <child link="tilt_bracket" />
         <axis xyz="0 0 1" />
-        <origin xyz="0 0 0.1397" />
+        <origin xyz="0.1016 0 0.1397" />
         <limit lower="-1.28" upper="1.28" effort="0" velocity="0" />
     </joint>
 
-    <joint name="tilt_servo_joint" type="revolute">
+    <joint name="tilt_servo_joint" type="fixed">
         <parent link="tilt_bracket" />
-        <child link="camera" />
+        <child link="camera_link" />
         <axis xyz="0 1 0" />
-        <origin xyz="0 0 0.02" />
+        <origin xyz="0 0 0.04" />
         <limit lower="-2.56" upper="0" effort="0" velocity="0" />
     </joint>
 
