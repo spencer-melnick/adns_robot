@@ -23,7 +23,7 @@
                 </image>
                 <clip>
                     <near>0.05</near>
-                    <far>5</far>
+                    <far>1000</far>
                 </clip>
                 <noise>
                     <type>gaussian</type>
@@ -36,8 +36,8 @@
                 <alwaysOn>true</alwaysOn>
                 <updateRate>0.0</updateRate>
                 <cameraName>/adns_robot/camera</cameraName>
-                <imageTopicName>color/image_raw</imageTopicName>
-                <cameraInfoTopicName>color/camera_info</cameraInfoTopicName>
+                <imageTopicName>image_raw</imageTopicName>
+                <cameraInfoTopicName>camera_info</cameraInfoTopicName>
                 <depthImageTopicName>depth/image_raw</depthImageTopicName>
                 <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
                 <pointCloudTopicName>depth/points</pointCloudTopicName>
@@ -217,7 +217,7 @@
 
         <visual>
             <geometry>
-                <box size="0.03 0.03 0.03" />
+                <box size="0.012 0.03 0.03" />
             </geometry>
             <material name="grey" />
         </visual>
@@ -233,12 +233,14 @@
 
     <link name="camera_link">
         <collision>
+            <origin xyz="0.02 0 0" />
             <geometry>
                 <box size="0.012 0.139 0.026" />
             </geometry>
         </collision>
 
         <visual>
+            <origin xyz="0.02 0 0" />
             <geometry>
                 <box size="0.012 0.139 0.026" />
             </geometry>
@@ -246,6 +248,7 @@
         </visual>
 
         <inertial>
+            <origin xyz="0.02 0 0" />
             <mass value="0.5" />
             <inertia
                 ixx="1.0" ixy="0.0" ixz="0.0"
@@ -293,7 +296,7 @@
         <parent link="container" />
         <child link="tilt_bracket" />
         <axis xyz="0 0 1" />
-        <origin xyz="0.1016 0 0.1397" />
+        <origin xyz="0.1524 0 0.1397" />
         <limit lower="-1.28" upper="1.28" effort="0" velocity="0" />
     </joint>
 

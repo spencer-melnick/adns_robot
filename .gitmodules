@@ -1,0 +1,3 @@
+[submodule "adns_robot_sim/models/aruco_gazebo"]
+	path = adns_robot_sim/models/aruco_gazebo
+	url = https://github.com/joselusl/aruco_gazebo.git

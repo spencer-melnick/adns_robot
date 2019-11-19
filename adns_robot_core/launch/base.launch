@@ -2,8 +2,29 @@
     <param name="adns_robot/wheel_base" type="double" value="0.3048" />
     <param name="adns_robot/wheel_radius" type="double" value="0.076" />
 
+    <node pkg="robot_state_publisher" type="robot_state_publisher" ns="adns_robot"
+        name="robot_state_publisher" respawn="false" output="screen">
+        <remap from="/joint_states" to="joint_states" />
+    </node>
+
     <node pkg="adns_robot_core" type="differential_drive" name="differential_drive" ns="adns_robot" />
-    <node pkg="image_proc" type="image_proc" name="image_proc" ns="adns_robot/camera/color">
+    <node pkg="image_proc" type="image_proc" name="image_proc" ns="adns_robot/camera">
+        <remap from="image_rect" to="/camera" />
         <param name="queue_size" type="int" value="1" />
+    </node>
+
+    <node pkg="topic_tools" type="relay" name="camera_info_relay" ns="adns_robot"
+        args="/adns_robot/camera/camera_info /camera_info">
+        <param name="~stealth" type="bool" value="true" />
+    </node>
+
+    <node pkg="aruco_detect" type="aruco_detect" name="aruco_detect" ns="adns_robot">
+        <param name="finducial_len" type="double" value="0.14" />
+        <param name="fiducial_len_override" type="string" value="" />
+        <param name="publish_images" type="bool" value="true" />
+
+        <remap from="/fiducial_images" to="fiducial_images" />
+        <remap from="/fiducial_transforms" to="fiducial_transforms" />
+        <remap from="/fiducial_vertices" to="fiducial_vertices" />
     </node>
 </launch>

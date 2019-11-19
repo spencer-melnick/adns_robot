@@ -56,7 +56,8 @@
   <depend>geometry_msgs</depend>
   <depend>roscpp</depend>
   <exec_depend>image_proc</exec_depend>
-  <exec_depend>nodelet</exec_depend>
+  <exec_depend>aruco_detect</exec_depend>
+  <exec_depend>topic_tools</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
