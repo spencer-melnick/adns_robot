@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/usr/include",
+                "/opt/ros/melodic/include",
+                "/usr/include/gazebo-9",
+                "/usr/include/ignition/math4",
+                "/usr/include/ignition/msgs1",
+                "/usr/include/ignition/transport4",
+                "/usr/include/sdformat-6.0/",
+                "${workspaceFolder}/../../devel/include",
+                "${workspaceFolder}/adns_robot_sim/include"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
