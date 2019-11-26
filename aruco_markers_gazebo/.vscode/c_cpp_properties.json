@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/spencer/Projects/ROS/catkin_ws/devel/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/spencer/Projects/ROS/catkin_ws/src/adns_robot/adns_robot_sim/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ]
+}
