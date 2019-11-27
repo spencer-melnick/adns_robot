@@ -1,0 +1,19 @@
+material ArUco_[marker_name]
+{
+    technique
+    {
+        pass
+        {
+            ambient 0.2 0.2 0.2 1.0
+            diffuse 1.0 1.0 1.0 1.0
+            specular 0.1 0.1 0.1 1.0
+            emissive 0.2 0.2 0.2 1.0
+
+            texture_unit
+            {
+                texture ../textures/[marker_name].png
+                scale 1.0 1.0
+            }
+        }
+    }
+}

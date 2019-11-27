@@ -1,6 +1,6 @@
 <launch>
     <arg name="model_path" value="$(env HOME)/.ros/gazebo_models/aruco" />
-    <env name="GAZEBO_MODEL_PATH" value="$(env GAZEBO_MODEL_PATH);$(arg model_path)"
+    <env name="GAZEBO_MODEL_PATH" value="$(arg model_path)" />
 
     <arg name="urdf_path" default="$(find adns_robot_sim)/models/urdf/adns_robot.urdf" />
 

@@ -5,6 +5,7 @@ add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
     roscpp
+    roslib
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -18,7 +19,6 @@ find_package(nlohmann_json REQUIRED)
 
 catkin_package(
     INCLUDE_DIRS include
-    DEPENDS opencv3
 )
 
 include_directories(
@@ -31,7 +31,7 @@ add_executable(${PROJECT_NAME}_model_generator src/model_generator.cpp)
 set_target_properties(${PROJECT_NAME}_model_generator PROPERTIES OUTPUT_NAME model_generator PREFIX "")
 add_dependencies(${PROJECT_NAME}_model_generator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-target_link_libraries(${PROJECT_NAME}_model_generator
+target_link_libraries(${PROJECT_NAME}_model_generator PUBLIC
     ${catkin_LIBRARIES}
 )
 

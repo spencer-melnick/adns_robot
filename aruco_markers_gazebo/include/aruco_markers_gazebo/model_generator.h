@@ -2,13 +2,9 @@
 
 #include <string>
 #include <utility>
+#include <unordered_map>
 
-enum class DictionaryType
-{
-    Dict5x5,
-    Dict6x6,
-    Dict7x7
-};
+extern std::unordered_map<std::string, int> dictionary_strings;
 
 struct MarkerInfo
 {
@@ -16,5 +12,4 @@ struct MarkerInfo
     double side_length; // (in meters)
 };
 
-bool generate_aruco_image(DictionaryType dictionary, unsigned char id, const std::string& directory);
-std::pair<bool, DictionaryType> get_dictionary_type_from_string(const std::string& type);
+bool generate_aruco_image(int dictionary_id, int marker_id, const std::string& directory);

@@ -3,6 +3,6 @@
 
     <node pkg="aruco_markers_gazebo" type="model_generator" name="model_generator">
         <param name="input_file" type="string" value="$(find aruco_markers_gazebo)/config/markers.json" />
-        <param name="model_output_path" value="model_path" />
+        <param name="model_output_path" value="$(arg model_path)" />
     </node>
 </launch>

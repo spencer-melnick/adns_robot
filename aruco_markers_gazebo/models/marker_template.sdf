@@ -1,0 +1,35 @@
+<sdf version="1.4">
+    <model name="[marker_name]">
+        <pose>0 0 0 0 0 0</pose>
+        <static>true</static>
+        <link name="base">
+            <intertial>
+                <mass>1.0</mass>
+                <intertia>
+                    <ixx>0.1</ixx> <ixy>0.0</ixy> <ixz>0.0</ixz>
+                    <iyy>0.1</iyy> <iyz>0.0</iyz>
+                    <izz>0.1</izz>
+                </intertia>
+            </intertial>
+            <collision>
+                <geometry>
+                    <box>
+                        <size>0.01 [side_length] [side_length]</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual>
+                <mesh>
+                    <uri>model://meshes/unit_plane.stl</uri>
+                    <scale>1 [side_length] [side_length]</scale>
+                </mesh>
+                <material>
+                    <script>
+                        <uri>model://materials/[marker_name].material</uri>
+                        <name>ArUco_[marker_name]</name>
+                    </script>
+                </material>
+            </visual>
+        </link>
+    </model>
+</sdf>
