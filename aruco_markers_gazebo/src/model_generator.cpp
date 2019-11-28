@@ -29,10 +29,10 @@ using nlohmann::json;
 const char node_name[] = "model_generator";
 
 std::unordered_map<std::string, int> dictionary_strings = {
-    {"4x4", cv::aruco::DICT_4X4_250},
-    {"5x5", cv::aruco::DICT_5X5_250},
-    {"6x6", cv::aruco::DICT_6X6_250},
-    {"7x7", cv::aruco::DICT_7X7_250}
+    {"4x4", cv::aruco::DICT_4X4_1000},
+    {"5x5", cv::aruco::DICT_5X5_1000},
+    {"6x6", cv::aruco::DICT_6X6_1000},
+    {"7x7", cv::aruco::DICT_7X7_1000}
 };
 
 
@@ -142,20 +142,7 @@ int main(int argc, char** argv)
 
     std::string default_directory = std::string(getenv("HOME")) + "/.ros/gazebo_models/aruco";
     std::string output_directory = node.param<std::string>("model_output_path", default_directory);
-
-    // Create output directories
-    std::string texture_directory = output_directory + "/materials/textures";
-    std::string script_directory = output_directory + "/materials/scripts";
-    std::string mesh_directory = output_directory + "/meshes";
-    std::string model_directory = output_directory + "/models";
-    boost::filesystem::create_directories(texture_directory);
-    boost::filesystem::create_directories(script_directory);
-    boost::filesystem::create_directories(mesh_directory);
-    boost::filesystem::create_directories(model_directory);
-
-    // Copy flat plane mesh to model directory
     std::string package_path = ros::package::getPath("aruco_markers_gazebo");
-    boost::filesystem::copy_file(package_path + "/meshes/unit_plane.stl", mesh_directory + "/unit_plane.stl", boost::filesystem::copy_option::overwrite_if_exists);
 
     // Load template files into memory
     std::string model_template = load_file_to_string(package_path + "/models/marker_template.sdf");
@@ -175,23 +162,32 @@ int main(int argc, char** argv)
         MarkerInfo marker = i.get<MarkerInfo>();
         std::string marker_name = fmt::format("{}_{}", dictionary_string, marker.id);
 
+        // Create output directories
+        std::string model_directory = output_directory + "/" + marker_name;
+        std::string mesh_directory = model_directory + "/meshes";
+        boost::filesystem::create_directories(mesh_directory);
+        boost::filesystem::create_directories(model_directory);
+
+        // Copy flat plane mesh to model directory
+        boost::filesystem::copy_file(package_path + "/meshes/unit_plane.dae", mesh_directory + "/unit_plane.dae", boost::filesystem::copy_option::overwrite_if_exists);
+
+        // Fill in templates
         std::string rendered_model = std::regex_replace(model_template, std::regex("\\[marker_name\\]"), marker_name);
         rendered_model = std::regex_replace(rendered_model, std::regex("\\[side_length\\]"), fmt::format("{}", marker.side_length));
-        std::string rendered_material = std::regex_replace(material_template, std::regex("\\[marker_name\\]"), marker_name);
         std::string rendered_config = std::regex_replace(config_template, std::regex("\\[marker_name\\]"), marker_name);
 
-        std::ofstream model_file(model_directory + "/" + marker_name + ".sdf");
-        std::ofstream material_file(script_directory + "/" + marker_name + ".material");
-        std::ofstream config_file(model_directory + "/" + marker_name + ".config");
+        // Output files
+        std::ofstream model_file(model_directory + "/model.sdf");
+        std::ofstream config_file(model_directory + "/model.config");
         model_file << rendered_model;
-        material_file << rendered_material;
         config_file << rendered_config;
 
+        // Close all files
         model_file.close();
-        material_file.close();
         config_file.close();
 
-        generate_aruco_image(dictionary_id, marker.id, texture_directory);
+        // Render images
+        generate_aruco_image(dictionary_id, marker.id, mesh_directory);
     }
 
     return 0;
@@ -202,7 +198,7 @@ bool generate_aruco_image(int dictionary_id, int marker_id, const std::string& d
     cv::Ptr<cv::aruco::Dictionary> dictionary_pointer = cv::aruco::getPredefinedDictionary(dictionary_id);
     std::string dictionary_name = lookup_dictionary_name_by_id(dictionary_id);
 
-    std::string file_name = fmt::format("{}_{}.png", dictionary_name, marker_id);
+    std::string file_name = "marker.png";
     std::string file_path = fmt::format("{}/{}", directory, file_name);
 
     cv::Mat marker_image;

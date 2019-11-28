@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.81.16 commit date:2019-11-20, commit time:14:27, hash:26bd5ebd42e3</authoring_tool>
+    </contributor>
+    <created>2019-11-28T17:48:10</created>
+    <modified>2019-11-28T17:48:10</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_effects>
+    <effect id="basic_material-effect">
+      <profile_COMMON>
+        <newparam sid="marker_png-surface">
+          <surface type="2D">
+            <init_from>marker_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="marker_png-sampler">
+          <sampler2D>
+            <source>marker_png-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0.6 0.6 0.6 1</color>
+            </emission>
+            <ambient>
+              <color>0.6 0.6 0.6 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="marker_png-sampler" texcoord="Unit_Plane-mesh-map-0"/>
+            </diffuse>
+            <index_of_refraction>
+              <float sid="ior">1.45</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="marker_png" name="marker_png">
+      <init_from>marker.png</init_from>
+    </image>
+  </library_images>
+  <library_materials>
+    <material id="basic_material-material" name="basic_material">
+      <instance_effect url="#basic_material-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="Unit_Plane-mesh" name="Unit Plane">
+      <mesh>
+        <source id="Unit_Plane-mesh-positions">
+          <float_array id="Unit_Plane-mesh-positions-array" count="12">0.5 0 0.5 -0.5 0 0.5 -0.5 0 -0.5 0.5 0 -0.5</float_array>
+          <technique_common>
+            <accessor source="#Unit_Plane-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Unit_Plane-mesh-normals">
+          <float_array id="Unit_Plane-mesh-normals-array" count="3">0 -1 0</float_array>
+          <technique_common>
+            <accessor source="#Unit_Plane-mesh-normals-array" count="1" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Unit_Plane-mesh-map-0">
+          <float_array id="Unit_Plane-mesh-map-0-array" count="12">0.9999001 0.9999001 1.0004e-4 0.9999001 9.998e-5 1.00129e-4 0.9999001 0.9999001 9.998e-5 1.00129e-4 0.9999001 9.998e-5</float_array>
+          <technique_common>
+            <accessor source="#Unit_Plane-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Unit_Plane-mesh-vertices">
+          <input semantic="POSITION" source="#Unit_Plane-mesh-positions"/>
+        </vertices>
+        <triangles material="basic_material-material" count="2">
+          <input semantic="VERTEX" source="#Unit_Plane-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Unit_Plane-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Unit_Plane-mesh-map-0" offset="2" set="0"/>
+          <p>0 0 0 1 0 1 2 0 2 0 0 3 2 0 4 3 0 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="Unit_Plane" name="Unit Plane" type="NODE">
+        <matrix sid="transform">-7.58967e-7 -1 0 0 1 -7.58967e-7 0 0 0 0 1 0 0 0 0 1</matrix>
+        <instance_geometry url="#Unit_Plane-mesh" name="Unit Plane">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="basic_material-material" target="#basic_material-material">
+                <bind_vertex_input semantic="Unit_Plane-mesh-map-0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>
