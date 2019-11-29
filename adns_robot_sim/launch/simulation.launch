@@ -6,6 +6,7 @@
 
     <node pkg="aruco_markers_gazebo" type="model_generator" name="model_generator">
         <param name="model_output_path" value="$(arg model_path)" />
+        <param name="should_spawn_gazebo_models" type="bool" value="true" />
     </node>
 
     <include file="$(find gazebo_ros)/launch/empty_world.launch">

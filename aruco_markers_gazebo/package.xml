@@ -45,6 +45,7 @@
   <depend>roscpp</depend>
   <depend>roslib</depend>
   <depend>libopencv-dev</depend>
+  <build_depend>tf2</build_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

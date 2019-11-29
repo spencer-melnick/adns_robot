@@ -4,6 +4,7 @@
 #include <ros/ros.h>
 #include <ros/package.h>
 #include <xmlrpcpp/XmlRpc.h>
+#include <tf2/LinearMath/Quaternion.h>
 
 // OpenCV includes
 #include <opencv/cv.h>
@@ -13,6 +14,9 @@
 
 // Third-party system libraries
 #include <boost/filesystem.hpp>
+
+// Gazebo includes
+#include <gazebo_msgs/SpawnModel.h>
 
 // Standard libraries
 #include <fstream>
@@ -104,6 +108,7 @@ int main(int argc, char** argv)
     ros::NodeHandle node;
     ros::NodeHandle private_node("~");
 
+    // Load parameters
     std::string dictionary_string;
     ROS_WARN_COND_NAMED(!node.getParam("/aruco_dictionary", dictionary_string), node_name, "ArUco dictionary not specified");
     int dictionary_id = lookup_dictionary_id_by_name(dictionary_string);
@@ -111,6 +116,18 @@ int main(int argc, char** argv)
     XmlRpc::XmlRpcValue markers;
     ROS_WARN_COND_NAMED(!node.getParam("/aruco_markers", markers), node_name, "No ArUco markers specified");
 
+    bool should_spawn_gazebo_models = false;
+    ROS_WARN_COND_NAMED(!private_node.getParam("should_spawn_gazebo_models", should_spawn_gazebo_models), node_name, "No parameter specified, not spawning models");
+    ros::ServiceClient service_client;
+
+    if (should_spawn_gazebo_models)
+    {
+        ros::service::waitForService("gazebo/spawn_sdf_model");
+        service_client = node.serviceClient<gazebo_msgs::SpawnModel>("gazebo/spawn_sdf_model");
+        ROS_WARN_COND_NAMED(!service_client, node_name, "Unable to create service client");
+    }
+
+    // Define output paths
     std::string default_directory = std::string(getenv("HOME")) + "/.ros/gazebo_models/aruco";
     std::string output_directory = private_node.param<std::string>("model_output_path", default_directory);
     std::string package_path = ros::package::getPath("aruco_markers_gazebo");
@@ -122,10 +139,28 @@ int main(int argc, char** argv)
 
     for (int i = 0; i < markers.size(); i++)
     {
+        // Populate struct from XML value
+        // TODO: add error checking
         XmlRpc::XmlRpcValue marker_xml = markers[i];
+        XmlRpc::XmlRpcValue pose = marker_xml["pose"];
         MarkerInfo marker;
         marker.id = marker_xml["id"];
         marker.side_length = marker_xml["side_length"];
+
+        // Populate position
+        marker.pose.position.x = pose[0];
+        marker.pose.position.y = pose[1];
+        marker.pose.position.z = pose[2];
+
+        // Get quaternion from Euler angles
+        tf2::Quaternion orientation;
+        orientation.setRPY(pose[3], pose[4], pose[5]);
+
+        // Populate orientation from quaternion
+        marker.pose.orientation.x = orientation.getX();
+        marker.pose.orientation.y = orientation.getY();
+        marker.pose.orientation.z = orientation.getZ();
+        marker.pose.orientation.w = orientation.getW();
 
         std::string marker_name = dictionary_string + "_" + std::to_string(marker.id);
 
@@ -155,6 +190,19 @@ int main(int argc, char** argv)
 
         // Render images
         generate_aruco_image(dictionary_id, marker.id, mesh_directory);
+
+        if (should_spawn_gazebo_models)
+        {
+            gazebo_msgs::SpawnModel spawn_model;
+            spawn_model.request.initial_pose = marker.pose;
+            spawn_model.request.model_xml = rendered_model;
+            spawn_model.request.model_name = marker_name;
+            spawn_model.request.robot_namespace = "aruco_markers";
+
+            ROS_WARN_COND_NAMED(!service_client.call(spawn_model), node_name, "Unable to call spawn_sdf_model service");
+            ROS_WARN_COND_NAMED(!spawn_model.response.success, node_name, "Unable to spawn ArUco model %s: %s", spawn_model.request.model_xml.c_str(),
+                spawn_model.response.status_message.c_str());
+        }
     }
 
     return 0;
