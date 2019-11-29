@@ -3,6 +3,7 @@
 // ROS includes
 #include <ros/ros.h>
 #include <ros/package.h>
+#include <xmlrpcpp/XmlRpc.h>
 
 // OpenCV includes
 #include <opencv/cv.h>
@@ -12,15 +13,11 @@
 
 // Third-party system libraries
 #include <boost/filesystem.hpp>
-#include <fmt/format.h>
-#include <nlohmann/json.hpp>
 
 // Standard libraries
 #include <fstream>
 #include <regex>
 #include <stdlib.h>
-
-using nlohmann::json;
 
 
 
@@ -39,17 +36,6 @@ std::unordered_map<std::string, int> dictionary_strings = {
 
 
 // Utility functions
-
-void to_json(json& j, const MarkerInfo& marker)
-{
-    j = json{{"id", marker.id}, {"side_length", marker.side_length}};
-}
-
-void from_json(const json& j, MarkerInfo& marker)
-{
-    j.at("id").get_to(marker.id);
-    j.at("side_length").get_to(marker.side_length);
-}
 
 int lookup_dictionary_id_by_name(const std::string& name)
 {
@@ -115,33 +101,18 @@ std::string load_file_to_string(const std::string& filename)
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, node_name);
-    ros::NodeHandle node("~");
-    std::string input_path;
+    ros::NodeHandle node;
+    ros::NodeHandle private_node("~");
 
-    if (!node.getParam("input_file", input_path))
-    {
-        ROS_FATAL_NAMED(node_name, "No input file specified");
-        return 1;
-    }
-
-    std::ifstream input_stream(input_path);
-
-    if (!input_stream.is_open())
-    {
-        ROS_FATAL_NAMED(node_name, "Cannot open input file %s", input_path.c_str());
-        return 1;
-    }
-
-    json input;
-    input_stream >> input;
-    input_stream.close();
-
-    ROS_WARN_COND_NAMED(!input.contains("dictionary"), node_name, "Input file %s does not specify a dictionary type - using default", input_path.c_str());
-    std::string dictionary_string = input.value<std::string>("dictionary", "6x6");
+    std::string dictionary_string;
+    ROS_WARN_COND_NAMED(!node.getParam("/aruco_dictionary", dictionary_string), node_name, "ArUco dictionary not specified");
     int dictionary_id = lookup_dictionary_id_by_name(dictionary_string);
 
+    XmlRpc::XmlRpcValue markers;
+    ROS_WARN_COND_NAMED(!node.getParam("/aruco_markers", markers), node_name, "No ArUco markers specified");
+
     std::string default_directory = std::string(getenv("HOME")) + "/.ros/gazebo_models/aruco";
-    std::string output_directory = node.param<std::string>("model_output_path", default_directory);
+    std::string output_directory = private_node.param<std::string>("model_output_path", default_directory);
     std::string package_path = ros::package::getPath("aruco_markers_gazebo");
 
     // Load template files into memory
@@ -149,18 +120,14 @@ int main(int argc, char** argv)
     std::string material_template = load_file_to_string(package_path + "/materials/scripts/template.material");
     std::string config_template = load_file_to_string(package_path + "/models/marker_template.config");
 
-    auto markers = input.find("markers");
-
-    if (markers == input.end() || markers->type() != json::value_t::array)
+    for (int i = 0; i < markers.size(); i++)
     {
-        ROS_WARN_NAMED(node_name, "No markers specified in input file, skipping generation");
-        return 1;
-    }
+        XmlRpc::XmlRpcValue marker_xml = markers[i];
+        MarkerInfo marker;
+        marker.id = marker_xml["id"];
+        marker.side_length = marker_xml["side_length"];
 
-    for (auto i : *markers)
-    {
-        MarkerInfo marker = i.get<MarkerInfo>();
-        std::string marker_name = fmt::format("{}_{}", dictionary_string, marker.id);
+        std::string marker_name = dictionary_string + "_" + std::to_string(marker.id);
 
         // Create output directories
         std::string model_directory = output_directory + "/" + marker_name;
@@ -173,7 +140,7 @@ int main(int argc, char** argv)
 
         // Fill in templates
         std::string rendered_model = std::regex_replace(model_template, std::regex("\\[marker_name\\]"), marker_name);
-        rendered_model = std::regex_replace(rendered_model, std::regex("\\[side_length\\]"), fmt::format("{}", marker.side_length));
+        rendered_model = std::regex_replace(rendered_model, std::regex("\\[side_length\\]"), std::to_string(marker.side_length));
         std::string rendered_config = std::regex_replace(config_template, std::regex("\\[marker_name\\]"), marker_name);
 
         // Output files
@@ -199,7 +166,7 @@ bool generate_aruco_image(int dictionary_id, int marker_id, const std::string& d
     std::string dictionary_name = lookup_dictionary_name_by_id(dictionary_id);
 
     std::string file_name = "marker.png";
-    std::string file_path = fmt::format("{}/{}", directory, file_name);
+    std::string file_path = directory + "/" + file_name;
 
     cv::Mat marker_image;
     cv::aruco::drawMarker(dictionary_pointer, marker_id, 1024, marker_image);

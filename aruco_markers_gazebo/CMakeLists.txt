@@ -14,8 +14,6 @@ find_package(Boost REQUIRED COMPONENTS
 )
 
 find_package(OpenCV REQUIRED)
-find_package(FMT REQUIRED)
-find_package(nlohmann_json REQUIRED)
 
 catkin_package(
     INCLUDE_DIRS include
@@ -37,7 +35,5 @@ target_link_libraries(${PROJECT_NAME}_model_generator PUBLIC
 
 target_link_libraries(${PROJECT_NAME}_model_generator PRIVATE
     ${OpenCV_LIBRARIES}
-    fmt::fmt
-    nlohmann_json::nlohmann_json
 )
 

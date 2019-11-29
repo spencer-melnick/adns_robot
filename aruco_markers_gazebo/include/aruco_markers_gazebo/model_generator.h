@@ -8,7 +8,7 @@ extern std::unordered_map<std::string, int> dictionary_strings;
 
 struct MarkerInfo
 {
-    unsigned char id;
+    int id;
     double side_length; // (in meters)
 };
 
