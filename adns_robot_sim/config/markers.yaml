@@ -1,8 +1,8 @@
-aruco_dictionary: "5x5"
+aruco_dictionary: "5x5_1000"
 aruco_markers:
   - id: 1
-    side_length: 0.144
-    pose: [1.0, 0.0, 0.4, 0.0, 0.0, 3.1416]
+    side_length: 0.14
+    pose: [1.0, 0.0, 0.4, 0.0, -1.5708, 0.0]
   - id: 2
-    side_length: 0.144
-    pose: [1.0, 1.0, 0.4, 0.0, 0.0, 3.1416]
+    side_length: 0.14
+    pose: [1.0, 1.0, 0.4, 0.0, -1.5708, 0.0]

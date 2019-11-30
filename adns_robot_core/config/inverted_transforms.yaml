@@ -1,0 +1,7 @@
+inverted_transforms:
+  - parent: "tilt_bracket"
+    child: "camera_link"
+  - parent: "container"
+    child: "tilt_bracket"
+  - parent: "base_link"
+    child: "container"

@@ -1,6 +1,7 @@
 <launch>
     <param name="adns_robot/wheel_base" type="double" value="0.3048" />
     <param name="adns_robot/wheel_radius" type="double" value="0.076" />
+    <rosparam command="load" file="$(find adns_robot_core)/config/inverted_transforms.yaml" />
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" ns="adns_robot"
         name="robot_state_publisher" respawn="false" output="screen">
@@ -11,6 +12,15 @@
     <node pkg="image_proc" type="image_proc" name="image_proc" ns="adns_robot/camera">
         <remap from="image_rect" to="/camera" />
         <param name="queue_size" type="int" value="1" />
+    </node>
+
+    <node pkg="adns_robot_core" type="marker_tf_broadcaster" name="marker_tf_broadcaster" />
+    <node pkg="adns_robot_core" type="pose_tf_broadcaster" name="pose_tf_broadcaster" ns="adns_robot">
+        <param name="transform_topic" value="/adns_robot/fiducial_transforms" />
+    </node>
+
+    <node pkg="adns_robot_core" type="tf_inverter" name="tf_inverter" ns="adns_robot">
+        <param name="publish_rate" type="double" value="20.0" />
     </node>
 
     <node pkg="topic_tools" type="relay" name="camera_info_relay" ns="adns_robot"

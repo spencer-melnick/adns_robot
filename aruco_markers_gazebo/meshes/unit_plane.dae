@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.81.16 commit date:2019-11-20, commit time:14:27, hash:26bd5ebd42e3</authoring_tool>
     </contributor>
-    <created>2019-11-28T17:48:10</created>
-    <modified>2019-11-28T17:48:10</modified>
+    <created>2019-11-30T01:42:55</created>
+    <modified>2019-11-30T01:42:55</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -24,20 +24,17 @@
           </sampler2D>
         </newparam>
         <technique sid="common">
-          <phong>
+          <lambert>
             <emission>
-              <color>0.6 0.6 0.6 1</color>
+              <color sid="emission">0.6 0.6 0.6 1</color>
             </emission>
-            <ambient>
-              <color>0.6 0.6 0.6 1</color>
-            </ambient>
             <diffuse>
               <texture texture="marker_png-sampler" texcoord="Unit_Plane-mesh-map-0"/>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1.45</float>
             </index_of_refraction>
-          </phong>
+          </lambert>
         </technique>
       </profile_COMMON>
     </effect>
@@ -99,7 +96,7 @@
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
       <node id="Unit_Plane" name="Unit Plane" type="NODE">
-        <matrix sid="transform">-7.58967e-7 -1 0 0 1 -7.58967e-7 0 0 0 0 1 0 0 0 0 1</matrix>
+        <matrix sid="transform">1 -4.37123e-8 7.78829e-7 0 -7.78829e-7 -1.2358e-6 1 0 -4.37113e-8 -1 -1.2358e-6 0 0 0 0 1</matrix>
         <instance_geometry url="#Unit_Plane-mesh" name="Unit Plane">
           <bind_material>
             <technique_common>

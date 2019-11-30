@@ -30,10 +30,14 @@
 const char node_name[] = "model_generator";
 
 std::unordered_map<std::string, int> dictionary_strings = {
-    {"4x4", cv::aruco::DICT_4X4_1000},
-    {"5x5", cv::aruco::DICT_5X5_1000},
-    {"6x6", cv::aruco::DICT_6X6_1000},
-    {"7x7", cv::aruco::DICT_7X7_1000}
+    {"4x4_250", cv::aruco::DICT_4X4_250},
+    {"4x4_1000", cv::aruco::DICT_4X4_1000},
+    {"5x5_250", cv::aruco::DICT_5X5_250},
+    {"5x5_1000", cv::aruco::DICT_5X5_1000},
+    {"6x6_250", cv::aruco::DICT_6X6_250},
+    {"6x6_1000", cv::aruco::DICT_6X6_1000},
+    {"7x7_250", cv::aruco::DICT_7X7_250},
+    {"7x7_1000", cv::aruco::DICT_7X7_1000}
 };
 
 

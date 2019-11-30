@@ -22,7 +22,7 @@
                 <geometry>
                     <mesh>
                         <uri>model://[marker_name]/meshes/unit_plane.dae</uri>
-                        <scale>1 [side_length] [side_length]</scale>
+                        <scale>[side_length] [side_length] 1</scale>
                     </mesh>
                 </geometry>
             </visual>
