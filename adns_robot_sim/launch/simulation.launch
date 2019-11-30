@@ -1,8 +1,8 @@
 <launch>
     <arg name="model_path" value="$(env HOME)/.ros/gazebo_models/aruco" />
     <env name="GAZEBO_MODEL_PATH" value="$(arg model_path)" />
-    <arg name="urdf_path" default="$(find adns_robot_sim)/models/urdf/adns_robot.urdf" />
     <rosparam command="load" file="$(find adns_robot_sim)/config/markers.yaml" />
+    <arg name="urdf_path" default="$(find adns_robot_core)/models/urdf/adns_robot.urdf" />
 
     <node pkg="aruco_markers_gazebo" type="model_generator" name="model_generator">
         <param name="model_output_path" value="$(arg model_path)" />

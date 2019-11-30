@@ -2,6 +2,7 @@
     <param name="adns_robot/wheel_base" type="double" value="0.3048" />
     <param name="adns_robot/wheel_radius" type="double" value="0.076" />
     <rosparam command="load" file="$(find adns_robot_core)/config/inverted_transforms.yaml" />
+    <arg name="urdf_path" default="$(find adns_robot_core)/models/urdf/adns_robot.urdf" />
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" ns="adns_robot"
         name="robot_state_publisher" respawn="false" output="screen">

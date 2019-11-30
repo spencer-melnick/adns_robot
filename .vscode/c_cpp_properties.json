@@ -14,7 +14,8 @@
                 "/usr/include/ignition/transport4",
                 "/usr/include/sdformat-6.0/",
                 "${workspaceFolder}/../../devel/include",
-                "${workspaceFolder}/adns_robot_sim/include"
+                "${workspaceFolder}/adns_robot_sim/include",
+                "${workspaceFolder}/aruco_markers_gazebo/include"
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",
