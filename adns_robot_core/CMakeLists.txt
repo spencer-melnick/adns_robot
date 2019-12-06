@@ -67,3 +67,12 @@ add_dependencies(${PROJECT_NAME}_tf_inverter ${${PROJECT_NAME}_EXPORTED_TARGETS}
 target_link_libraries(${PROJECT_NAME}_tf_inverter
   ${catkin_LIBRARIES}
 )
+
+
+add_executable(${PROJECT_NAME}_markers_to_map src/markers_to_map.cpp)
+set_target_properties(${PROJECT_NAME}_markers_to_map PROPERTIES OUTPUT_NAME markers_to_map PREFIX "")
+add_dependencies(${PROJECT_NAME}_markers_to_map ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(${PROJECT_NAME}_markers_to_map
+  ${catkin_LIBRARIES}
+)
