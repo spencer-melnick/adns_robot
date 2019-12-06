@@ -25,7 +25,7 @@ class PoseBroadcasterNode
             node.getParam("output_topic", output_topic);
 
             fiducial_subscriber_ = node.subscribe(input_topic, 1, &PoseBroadcasterNode::OnFiducialTransformsUpdates, this);
-            pose_subscriber_ = node.subscribe("/fiducial_pose", 1, &PoseBroadcasterNode::OnFiducialPoseUpdate, this);
+            // pose_subscriber_ = node.subscribe("/fiducial_pose", 1, &PoseBroadcasterNode::OnFiducialPoseUpdate, this);
             publisher_ = node.advertise<fiducial_msgs::FiducialTransformArray>(output_topic, 5);
         }
 
