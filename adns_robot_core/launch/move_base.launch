@@ -1,0 +1,20 @@
+<launch>
+
+    <!-- Needs to be filled to run! -->
+    <arg name="map_file_yaml" default="" />
+
+    <master auto="start"/>
+    <!-- Run the map server --> 
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file_yaml)"/>
+
+
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+        <rosparam file="$(find adns_robot_core)/config/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
+        <rosparam file="$(find adns_robot_core)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find adns_robot_core)/config/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find adns_robot_core)/config/global_costmap_params.yaml" command="load" /> 
+        <rosparam file="$(find adns_robot_core)/config/base_local_planner_params.yaml" command="load" />
+        <remap from="cmd_vel" to="/adns_robot/cmd_vel" />
+    </node>
+
+</launch>

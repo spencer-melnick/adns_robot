@@ -20,5 +20,6 @@
 
     <include file="$(find adns_robot_core)/launch/base.launch">
         <arg name="map_path" value="$(find adns_robot_sim)/maps/map1.txt" />
+        <arg name="map_file_yaml" value="$(find adns_robot_sim)/maps/map1.yaml" />
     </include>
 </launch>

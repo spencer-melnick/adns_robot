@@ -61,6 +61,8 @@
   <depend>fiducials</depend>
   <exec_depend>image_proc</exec_depend>
   <exec_depend>topic_tools</exec_depend>
+  <exec_depend>move_base</exec_depend>
+  <exec_depend>map_server</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

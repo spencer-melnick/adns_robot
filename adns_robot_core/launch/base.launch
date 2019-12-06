@@ -5,6 +5,7 @@
 
     <arg name="map_path" default="$(env HOME)/.ros/adns_robot/maps/map1.txt" />
     <arg name="urdf_path" default="$(find adns_robot_core)/models/urdf/adns_robot.urdf" />
+    <arg name="map_file_yaml" default="" />
 
 
     <!-- <node pkg="adns_robot_core" type="markers_to_map" name="markers_to_map">
@@ -44,4 +45,8 @@
         <param name="base_frame" type="string" value="base_link" />
         <param name="read_only_map" type="bool" value="true" />
     </node>
+
+    <include file="$(find adns_robot_core)/launch/move_base.launch">
+        <arg name="map_file_yaml" value="$(arg map_file_yaml)" />
+    </include>
 </launch>
