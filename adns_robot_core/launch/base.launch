@@ -1,7 +1,7 @@
 <launch>
     <param name="adns_robot/wheel_base" type="double" value="0.3048" />
     <param name="adns_robot/wheel_radius" type="double" value="0.076" />
-    <rosparam command="load" file="$(find adns_robot_core)/config/inverted_transforms.yaml" />
+    <!-- <rosparam command="load" file="$(find adns_robot_core)/config/inverted_transforms.yaml" /> -->
     <arg name="urdf_path" default="$(find adns_robot_core)/models/urdf/adns_robot.urdf" />
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" ns="adns_robot"
@@ -15,14 +15,14 @@
         <param name="queue_size" type="int" value="1" />
     </node>
 
-    <node pkg="adns_robot_core" type="marker_tf_broadcaster" name="marker_tf_broadcaster" />
+    <!-- <node pkg="adns_robot_core" type="marker_tf_broadcaster" name="marker_tf_broadcaster" />
     <node pkg="adns_robot_core" type="pose_tf_broadcaster" name="pose_tf_broadcaster" ns="adns_robot">
         <param name="transform_topic" value="/adns_robot/fiducial_transforms" />
-    </node>
+    </node> -->
 
-    <node pkg="adns_robot_core" type="tf_inverter" name="tf_inverter" ns="adns_robot">
+    <!-- <node pkg="adns_robot_core" type="tf_inverter" name="tf_inverter" ns="adns_robot">
         <param name="publish_rate" type="double" value="20.0" />
-    </node>
+    </node> -->
 
     <node pkg="topic_tools" type="relay" name="camera_info_relay" ns="adns_robot"
         args="/adns_robot/camera/camera_info /camera_info">
@@ -30,12 +30,13 @@
     </node>
 
     <node pkg="aruco_detect" type="aruco_detect" name="aruco_detect" ns="adns_robot">
-        <param name="finducial_len" type="double" value="0.14" />
+        <param name="fiducial_len" type="double" value="0.14" />
         <param name="fiducial_len_override" type="string" value="" />
         <param name="publish_images" type="bool" value="true" />
+    </node>
 
-        <remap from="/fiducial_images" to="fiducial_images" />
-        <remap from="/fiducial_transforms" to="fiducial_transforms" />
-        <remap from="/fiducial_vertices" to="fiducial_vertices" />
+    <node pkg="fiducial_slam" type="fiducial_slam" name="fiducial_slam">
+        <param name="odom_frame" type="string" value="odom" />
+        <!-- <param name="read_only_map" type="bool" value="true" /> -->
     </node>
 </launch>

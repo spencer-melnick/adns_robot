@@ -54,11 +54,12 @@
   <exec_depend>message_runtime</exec_depend>
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
   <depend>roscpp</depend>
   <depend>tf2</depend>
   <depend>tf2_ros</depend>
+  <depend>fiducials</depend>
   <exec_depend>image_proc</exec_depend>
-  <exec_depend>aruco_detect</exec_depend>
   <exec_depend>topic_tools</exec_depend>
 
 
