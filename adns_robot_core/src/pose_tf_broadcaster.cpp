@@ -24,7 +24,8 @@ class PoseBroadcasterNode
             node.getParam("camera_link_name", camera_link_name_);
             node.getParam("output_topic", output_topic);
 
-            subscriber_ = node.subscribe(input_topic, 1, &PoseBroadcasterNode::OnFiducialTransformsUpdates, this);
+            fiducial_subscriber_ = node.subscribe(input_topic, 1, &PoseBroadcasterNode::OnFiducialTransformsUpdates, this);
+            pose_subscriber_ = node.subscribe("/fiducial_pose", 1, &PoseBroadcasterNode::OnFiducialPoseUpdate, this);
             publisher_ = node.advertise<fiducial_msgs::FiducialTransformArray>(output_topic, 5);
         }
 
@@ -48,12 +49,34 @@ class PoseBroadcasterNode
             publisher_.publish(message);
         }
 
+        void OnFiducialPoseUpdate(geometry_msgs::PoseWithCovarianceStamped message)
+        {
+            geometry_msgs::TransformStamped transform;
+
+            transform.child_frame_id = base_link_name_;
+            transform.header.frame_id = "odom";
+            transform.header.stamp = message.header.stamp;
+
+            geometry_msgs::Vector3 translation;
+            translation.x = message.pose.pose.position.x;
+            translation.y = message.pose.pose.position.y;
+            translation.z = message.pose.pose.position.z;
+
+            transform.transform.translation = translation;
+            transform.transform.rotation = message.pose.pose.orientation;
+
+            broadcaster_.sendTransform(transform);
+        }
+
     private:
         std::string camera_link_name_ = "camera_link";
         std::string base_link_name_ = "base_link";
 
-        ros::Subscriber subscriber_;
+        ros::Subscriber fiducial_subscriber_;
+        ros::Subscriber pose_subscriber_;
         ros::Publisher publisher_;
+
+        tf2_ros::TransformBroadcaster broadcaster_;
 };
 
 int main(int argc, char** argv)
