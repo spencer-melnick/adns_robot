@@ -1,4 +1,6 @@
 <launch>
+    <env name="ROSCONSOLE_CONFIG_FILE" value="$(find adns_robot_sim)/config/rosconsole.config" />
+
     <arg name="model_path" value="$(env HOME)/.ros/gazebo_models/aruco" />
     <env name="GAZEBO_MODEL_PATH" value="$(arg model_path)" />
     <rosparam command="load" file="$(find adns_robot_sim)/config/markers.yaml" />
@@ -16,5 +18,7 @@
     <param name="robot_description" textfile="$(arg urdf_path)"/>
     <node pkg="gazebo_ros" type="spawn_model" name="gazebo_spawn_robot" args="-file $(arg urdf_path) -urdf -x 0 -y 0 -z 1 -model adns_robot" />
 
-    <include file="$(find adns_robot_core)/launch/base.launch" />
+    <include file="$(find adns_robot_core)/launch/base.launch">
+        <arg name="map_path" value="$(find adns_robot_sim)/maps/map1.txt" />
+    </include>
 </launch>

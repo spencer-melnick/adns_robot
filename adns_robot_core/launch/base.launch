@@ -40,8 +40,8 @@
 
     <node pkg="fiducial_slam" type="fiducial_slam" name="fiducial_slam">
         <param name="map_file" type="string" value="$(arg map_path)" />
-        <!-- <param name="odom_frame" type="string" value="odom" /> -->
+        <param name="odom_frame" type="string" value="odom" />
         <param name="base_frame" type="string" value="base_link" />
-        <!-- <param name="read_only_map" type="bool" value="true" /> -->
+        <param name="read_only_map" type="bool" value="true" />
     </node>
 </launch>
